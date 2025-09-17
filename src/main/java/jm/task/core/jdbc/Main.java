@@ -31,6 +31,10 @@ public class Main {
         users.forEach(System.out::println);
         userService.cleanUsersTable();
         userService.dropUsersTable();
+//        userService.dropUsersTable();
+//        userService.dropUsersTable();
+//        userService.dropUsersTable();
+
 
     }
 }
