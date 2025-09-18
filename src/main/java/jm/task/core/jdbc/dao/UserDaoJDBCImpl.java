@@ -22,8 +22,8 @@ public class UserDaoJDBCImpl implements UserDao {
         try (var connection = Util.openConnection();
              var statement = connection.createStatement()) {
             var executeResult = statement.execute(sql);
-//            System.out.println(executeResult);
-
+//            System.out.println(executeResult); // комментов в коде таких недолжно быть, или убираем или оставляем, но без комментария как у тебя
+// лишняя строка
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,7 +40,7 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException e) {
             return false;
         }
-
+// лишняя строка
     }
 
     public void createUsersTable() {
@@ -53,7 +53,7 @@ public class UserDaoJDBCImpl implements UserDao {
                      age TINYINT NOT NULL
                  );
                  """;
-
+// лишняя строка
         loadSQL(sql);
     }
 
@@ -64,75 +64,91 @@ public class UserDaoJDBCImpl implements UserDao {
                 """;
 //        System.out.println(tableExists());
         if (tableExists()) {
-          System.out.println("Таблица user будет удалена");
-          loadSQL(sql);
-          System.out.println("Таблица user удалена");
-      } else System.out.println("Таблица user не существует");
-}
-
-public void saveUser(String name, String lastName, byte age) {
-    String sql = """
-            INSERT INTO user (name, last_name, age)
-            VALUES (?, ?, ?);
-            """;
-    try (var connection = Util.openConnection();
-         var preparedStatement = connection.prepareStatement(sql)) {
-        preparedStatement.setString(1, name);
-        preparedStatement.setString(2, lastName);
-        preparedStatement.setByte(3, age);
-        preparedStatement.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
+            System.out.println("Таблица user будет удалена");
+            loadSQL(sql);
+            System.out.println("Таблица user удалена");
+        } else System.out.println("Таблица user не существует");
     }
-    System.out.println("User с именем - " + name + " добавлен в базу данных");
-}
 
-public void removeUserById(long id) {
-    String sql = """
-            DELETE FROM user 
-            where (id = ?);
-            """;
-    try (var connection = Util.openConnection();
-         var preparedStatement = connection.prepareStatement(sql)) {
-        preparedStatement.setLong(1, id);
-        preparedStatement.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-public List<User> getAllUsers() {
-    String sql = """
-            SELECT name, last_name, age 
-            FROM user
-            """;
-    List<User> users = new ArrayList<>();
-    try (var connection = Util.openConnection();
-         var preparedStatement = connection.prepareStatement(sql)) {
-        var resultSet = preparedStatement.executeQuery();
-
-        while (resultSet.next()) {
-            users.add(new User(
-                    resultSet.getString("name"),
-                    resultSet.getString("last_name"),
-                    resultSet.getByte("age")
-            ));
+    public void saveUser(String name, String lastName, byte age) {
+        String sql = """
+                INSERT INTO user (name, last_name, age)
+                VALUES (?, ?, ?);
+                """;
+        try (var connection = Util.openConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setByte(3, age);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        System.out.println("User с именем - " + name + " добавлен в базу данных");
     }
-    return users;
-}
 
-public void cleanUsersTable() {
-    String sql = """
-            DELETE FROM user 
-            """;
-    try (var connection = Util.openConnection();
-         var preparedStatement = connection.prepareStatement(sql)) {
-        preparedStatement.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
+    public void removeUserById(long id) {
+        String sql = """
+                DELETE FROM user 
+                where (id = ?);
+                """;
+        try (var connection = Util.openConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<User> getAllUsers() {
+        String sql = """
+                SELECT name, last_name, age 
+                FROM user
+                """;
+        List<User> users = new ArrayList<>();
+        try (var connection = Util.openConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            var resultSet = preparedStatement.executeQuery();
+// здесь норм лишняя строка, т.к. ты отделяешь переменные от метода
+            while (resultSet.next()) {
+                users.add(new User(
+                        resultSet.getString("name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getByte("age")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public void cleanUsersTable() {
+        String sql = """
+                DELETE FROM user 
+                """;
+        try (var connection = Util.openConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
-}
+// ctrl + o (чистит импорты сверху неиспользуемые), ctrl + l (выравнивает код) это делаем всегда во всех классах
+// по сути когда ты работаешь с jdbc и connectom тебе надо самому делать 
+// } catch (SQLException e) {
+//            e.printStackTrace();
+//            try {
+//                connection.rollback();
+//            } catch (SQLException ex) {
+//                ex.printStackTrace();
+//            }
+//        } finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        } но позже джава сама под капотом это будет делатью. Просто чтобы знал
