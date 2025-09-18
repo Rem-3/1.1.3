@@ -24,5 +24,6 @@ public final class Util {
             throw new RuntimeException(e);
         }
     }
-
+// удали
 }
+// ctrl + o (чистит импорты сверху неиспользуемые), ctrl + l (выравнивает код) это делаем всегда во всех классах
