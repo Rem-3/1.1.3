@@ -11,7 +11,7 @@ public class UserServiceImpl implements UserService {
 
     public void createUsersTable() {
         userDao.createUsersTable();
-
+// не оставляй лишних пустых строк
     }
 
     public void dropUsersTable() {
