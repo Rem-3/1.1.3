@@ -4,8 +4,6 @@ import com.mysql.cj.jdbc.DatabaseMetaData;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -62,7 +60,7 @@ public class UserDaoJDBCImpl implements UserDao {
         String sql = """
                 DROP TABLE user;
                 """;
-//        System.out.println(tableExists());
+
         if (tableExists()) {
             System.out.println("Таблица user будет удалена");
             loadSQL(sql);
@@ -145,7 +143,7 @@ public class UserDaoJDBCImpl implements UserDao {
 //            } catch (SQLException ex) {
 //                ex.printStackTrace();
 //            }
-//        } finally {
+//        } final ly {
 //            try {
 //                connection.close();
 //            } catch (SQLException e) {

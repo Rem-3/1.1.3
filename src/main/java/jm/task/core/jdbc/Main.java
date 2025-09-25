@@ -1,22 +1,19 @@
 package jm.task.core.jdbc;
 
 
-import com.mysql.jdbc.Driver;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.service.UserServiceImpl;
 import jm.task.core.jdbc.util.Util;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        // реализуйте алгоритм здесь
+//         реализуйте алгоритм здесь
         UserService userService = new UserServiceImpl();
         userService.createUsersTable();
+
 
         User user1 = new User("Petr1", "Petrov", (byte) 22);
         User user2 = new User("Petr2", "Petrov", (byte) 22);
@@ -31,10 +28,7 @@ public class Main {
         users.forEach(System.out::println);
         userService.cleanUsersTable();
         userService.dropUsersTable();
-//        userService.dropUsersTable();
-//        userService.dropUsersTable();
-//        userService.dropUsersTable();
-
-
+        Util userDaoHibernate = new Util();
+        userDaoHibernate.HibernateStarter();
     }
 }
